@@ -239,6 +239,23 @@
                     </div>
                 </a>
                 <!-- /SISPRO -->
+                
+                <h6 class="m-l-10 text-muted">Downloads</h6>
+                
+                <!-- SMARTCLIENT_PROTHEUS -->
+                
+                <a class="lv-item" href="{{ static_url() }}/download/smartclient_producao.zip" download="">
+                    <div class="media">
+                        <div class="pull-left p-relative">
+                            <img class="lv-img-sm" src="{{ static_url('assets/img/logos/apps/totvs.png') }}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <div class="lv-title">SmartClient Protheus</div>
+                            <small class="lv-small">SmartClient do Protheus de Produção</small>
+                        </div>
+                    </div>
+                </a>
+                <!-- /SMARTCLIENT_PROTHEUS -->
 
             </div>
         </aside>

@@ -12,7 +12,7 @@
             <fieldset class="well well-alt">
                 <legend><span class="badge bgm-green">1.0</span> Identificação</legend>
                 <div class="row">
-                    <div class="col-lg-5">
+                    <div class="col-lg-5 col-lg-offset-1">
 
                         <!-- cpf -->
                         <div class="form-group fg-line">
@@ -39,15 +39,14 @@
                         </div>
                         <!-- /funcao -->
                     </div>
-                    <div class="col-lg-5 col-lg-offset-2">
+                    <div class="col-lg-5">
                         <!-- empresa -->
                         <div class="form-group fg-line">
                             <label><i class="badge bgm-lightgreen">1.5</i> Empresa <span class="text-danger">*</span></label>
                             <?php
-                            $empresa = $empresas;
-                            $empresa['OUTROS'] = 'OUTROS';
+                            $empresas['OUTROS'] = 'OUTROS';
                             echo $this->tag->selectStatic(['empresa',
-                                $empresa,
+                                $empresas,
                                 'useEmpty' => true,
                                 'emptyText' => 'Escolha uma opção',
                                 'emptyValue' => '',
@@ -80,7 +79,7 @@
             <fieldset class="well well-alt">
                 <legend><span class="badge bgm-green">2.0</span> Localização</legend>
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-5 col-lg-offset-1">
 
                         <!-- cep -->
                         <div class="form-group fg-line">
@@ -102,7 +101,7 @@
                             <div class="col-md-4">
                                 <div class="form-group fg-line">
                                     <label>
-                                        <i class="badge bgm-lightgreen">2.3</i> Número <span class="text-danger">*</span>
+                                        <i class="badge bgm-lightgreen">2.3</i> Nº <span class="text-danger">*</span>
                                     </label>
 
                                     {{ text_field("Número", "class" : "form-control fg-input fc-alt", "required": "required") }}
@@ -119,7 +118,7 @@
                         <!-- /complemento -->
 
                     </div>
-                    <div class="col-md-5 col-md-offset-2">
+                    <div class="col-md-5">
 
                         <!-- bairro -->
                         <div class="form-group fg-line">
@@ -165,7 +164,7 @@
                     <fieldset class="well well-alt">
                         <legend><span class="badge bgm-green">3.0</span> PPP</legend>
                         <div class="row">
-                            <div class="col-lg-5">
+                            <div class="col-lg-5 col-lg-offset-1">
 
                                 <!-- descricao_da_atividade -->
                                 <div class="form-group fg-line">
@@ -192,7 +191,7 @@
                                 </div>
                                 <!-- /pis -->
                             </div>
-                            <div class="col-lg-5 col-lg-offset-2">
+                            <div class="col-lg-5">
                                 <!-- data_de_admissao -->
                                 <div class="form-group fg-line">
                                     <label><i class="badge bgm-lightgreen">3.5</i> Data de Admissão</label>
@@ -305,7 +304,7 @@
                     <fieldset class="well well-alt">
                         <legend><span class="badge bgm-green">3.0</span> Outros</legend>
                         <div class="row">
-                            <div class="col-lg-5">
+                            <div class="col-lg-5 col-lg-offset-1">
 
                                 <!-- assunto -->
                                 <div class="form-group fg-line">
@@ -323,7 +322,7 @@
                                 </div>
                                 <!-- /assunto -->
                             </div>
-                            <div class="col-lg-5 col-lg-offset-2">
+                            <div class="col-lg-5">
 
                                 <!-- mensagem -->
                                 <div class="form-group fg-line">
@@ -339,7 +338,7 @@
                 </div>
                 <!-- /#outros -->
                 <div class="row">
-                    <div class="col-sm-1 col-sm-offset-11">
+                    <div class="col-sm-1 col-sm-offset-10">
                         <button type="submit" class="btn bgm-green">Enviar</button>
                     </div>
                 </div>

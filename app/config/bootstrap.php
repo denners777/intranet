@@ -110,7 +110,6 @@ class Bootstrap
 
         $application = $this->initModules($app);
         $this->initRouters($application);
-
         $application->setDI($this->_di);
 
         return $application->handle()->getContent();
@@ -196,28 +195,24 @@ class Bootstrap
         $environment = $config->application->environment != 'production' ? true : false;
 
         if ($environment) {
-            ini_set('display_errors', true);
             if (is_file(APP_PATH . '/app/library/WhoopsServiceProvider.php')) {
                 require_once APP_PATH . '/app/library/WhoopsServiceProvider.php';
             }
             new \Whoops\Provider\Phalcon\WhoopsServiceProvider($this->_di);
             $debug = new \Phalcon\Debug();
             $debug->listen();
-            $rollbar['environment'] = 'development';
-            $rollbar['root'] = '/var/www/html/intranet/';
         } else {
-            ini_set('display_errors', false);
-            error_reporting(-1);
             $rollbar['environment'] = 'production';
             $rollbar['root'] = '/var/www/html/';
+            $rollbar['access_token'] = '262a557a310a4cfb8d69a0085c5d861f';
+            \Rollbar::init($rollbar);
+            ini_set('display_errors', false);
+            error_reporting(-1);
         }
-
-        $rollbar['access_token'] = '262a557a310a4cfb8d69a0085c5d861f';
 
         set_error_handler(['\App\Plugins\Error', 'normal']);
         set_exception_handler(['\App\Plugins\Error', 'exception']);
         register_shutdown_function(['\App\Plugins\Error', 'shutdown']);
-        \Rollbar::init($rollbar);
     }
 
     /**

@@ -14,6 +14,7 @@ use Phalcon\Mvc\User\Plugin;
 use Phalcon\Dispatcher;
 use Phalcon\Mvc\Dispatcher\Exception as DispatcherException;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
+use Phalcon\Logger\Adapter\File as LoggerFile;
 
 /**
  * NotFoundPlugin
@@ -35,8 +36,9 @@ class NotFound extends Plugin
     {
 
         error_log($exception->getMessage() . PHP_EOL . $exception->getTraceAsString());
-        dump($exception);
-        exit;
+        $logger = new LoggerFile(APP_PATH . '/logs/' . date('Y-m-d') . '.log');
+        $logger->error($exception->getMessage());
+
         if ($exception instanceof DispatcherException) {
             switch ($exception->getCode()) {
                 case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:

@@ -160,8 +160,6 @@ class CellPhoneLineController extends ControllerBase {
 
             $this->flash->success('Linha Celular atualizada com sucesso!!!');
         } catch (\PDOException $e) {
-            dump($e);
-            exit;
             $this->flash->error($e->getMessage());
         }
         return $this->response->redirect('telephony/cell_phone_line');

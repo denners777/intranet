@@ -4,7 +4,7 @@
 <div class="lc-block toggled" id="l-login">
     {{ form('login/logon', 'method': 'post', 'autocomplete': 'off', 'onsubmit': 'overlay(true)') }}
     <h3>Entrar</h3>
-    <input type="hidden" name="{{ keyToken }}" value="{{ valueToken }}" />
+
     <div class="input-group m-b-20 fg-float">
         <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
         <div class="fg-line">
@@ -46,7 +46,6 @@
 <div class="lc-block valid-block" id="l-register">
     {{ form('login/register', 'method': 'post', 'autocomplete': 'off', 'onsubmit': 'overlay(true)') }}
     <h3>Cadastre-se</h3>
-    <input type="hidden" name="{{ keyToken }}" value="{{ valueToken }}" />
     <div class="input-group m-b-20 fg-float">
         <span class="input-group-addon"><i class="zmdi zmdi-account"></i></span>
         <div class="fg-line">
@@ -130,7 +129,7 @@
 <div class="lc-block" id="l-forget-password">
     {{ form('login/forgotPassword', 'method': 'post', 'autocomplete': 'off', 'onsubmit': 'overlay(true)') }}
     <h3>Esqueceu a senha?</h3>
-    <input type="hidden" name="{{ keyToken }}" value="{{ valueToken }}" />
+
     <p class="text-left">Se você esqueceu sua senha digite seu e-mail para uma nova senha temporária.</p>
 
     <div class="input-group m-b-20 fg-float">

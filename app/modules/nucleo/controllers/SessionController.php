@@ -40,11 +40,9 @@ class SessionController extends ControllerBase
             if ($this->auth->hasRememberMe()) {
                 return $this->auth->loginWithRememberMe();
             }
-            $this->assets->collection('footerJs')->addJs('app/nucleo/session/register.js');
             $colaboradores = new Colaboradores();
             $this->view->empresas = $colaboradores->getEmpresas();
-            $this->view->keyToken = $this->security->getTokenKey();
-            $this->view->valueToken = $this->security->getToken();
+            $this->assets->collection('footerJs')->addJs('app/nucleo/session/register.js');
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
         }
@@ -60,7 +58,6 @@ class SessionController extends ControllerBase
 
         try {
             if ($this->request->isPost()) {
-                //if ($this->security->checkToken()) {
 
                 if ($this->validation()) {
 
@@ -80,10 +77,6 @@ class SessionController extends ControllerBase
 
                     return $this->response->redirect();
                 }
-                /* } else {
-                  $this->security->hash(rand());
-                  throw new Exception('Chave CSRF inválida.');
-                  } */
             }
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
@@ -103,18 +96,12 @@ class SessionController extends ControllerBase
             if (!$this->request->isPost()) {
                 return $this->response->redirect('login');
             } else {
-                // if ($this->security->checkToken()) {
-
                 if ($this->validation()) {
 
                     if ($this->makeRegister()) {
                         $this->flash->success('Cadastro realizado com sucesso.');
                     }
                 }
-                /* } else {
-                  $this->security->hash(rand());
-                  throw new Exception('Chave CSRF inválida.');
-                  } */
             }
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
@@ -131,7 +118,7 @@ class SessionController extends ControllerBase
 
         try {
             if ($this->request->isPost()) {
-                //if ($this->security->checkToken()) {
+
                 if ($this->validation()) {
                     $user = Users::findFirstByEmail($this->request->getPost('email', 'email'));
                     if (!$user) {
@@ -153,10 +140,6 @@ class SessionController extends ControllerBase
                         }
                     }
                 }
-                /* } else {
-                  $this->security->hash(rand());
-                  throw new Exception('Chave CSRF inválida.');
-                  } */
             }
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
@@ -332,8 +315,8 @@ class SessionController extends ControllerBase
             }
 
             $user = Users::findFirst([
-                          'userName = ?0',
-                          'bind' => [$resetPassword->usersName]
+                        'userName = ?0',
+                        'bind' => [$resetPassword->usersName]
             ]);
 
             $this->auth->authUserById($user->id);
@@ -360,43 +343,36 @@ class SessionController extends ControllerBase
                 throw new Exception('Acesso inválido.');
             }
             if ($this->request->isPost()) {
-                if ($this->security->checkToken()) {
-                    if ($this->validation()) {
-                        $user->password = $this->security->hash($this->request->getPost('password'));
-                        $user->mustChangePassword = 'N';
-                        if (!$user->update()) {
+                if ($this->validation()) {
+                    $user->password = $this->security->hash($this->request->getPost('password'));
+                    $user->mustChangePassword = 'N';
+                    if (!$user->update()) {
+                        $msg = '';
+                        foreach ($user->getMessages() as $message) {
+                            $msg .= $message . '<br>';
+                        }
+                        throw new Exception($msg);
+                    } else {
+                        $passwordChange = new PasswordChanges();
+                        $passwordChange->usersName = $user->userName;
+                        $passwordChange->ipAddress = $this->request->getClientAddress();
+                        $passwordChange->userAgent = $this->request->getUserAgent();
+
+                        if (!$passwordChange->save()) {
                             $msg = '';
-                            foreach ($user->getMessages() as $message) {
+                            foreach ($passwordChange->getMessages() as $message) {
                                 $msg .= $message . '<br>';
                             }
                             throw new Exception($msg);
                         } else {
-                            $passwordChange = new PasswordChanges();
-                            $passwordChange->usersName = $user->userName;
-                            $passwordChange->ipAddress = $this->request->getClientAddress();
-                            $passwordChange->userAgent = $this->request->getUserAgent();
 
-                            if (!$passwordChange->save()) {
-                                $msg = '';
-                                foreach ($passwordChange->getMessages() as $message) {
-                                    $msg .= $message . '<br>';
-                                }
-                                throw new Exception($msg);
-                            } else {
-
-                                $this->flash->success('Sua senha foi alterada com sucesso');
-                            }
+                            $this->flash->success('Sua senha foi alterada com sucesso');
                         }
                     }
-                } else {
-                    $this->security->hash(rand());
-                    throw new Exception('Chave CSRF inválida.');
                 }
                 return $this->response->redirect();
             }
             $this->view->name = $user->name;
-            $this->view->keyToken = $this->security->getTokenKey();
-            $this->view->valueToken = $this->security->getToken();
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
             return $this->response->redirect('login');

@@ -6,6 +6,7 @@ use App\Shared\Models\ModelBase;
 use App\Modules\Nucleo\Models\Protheus\Protheus;
 use Phalcon\Db\RawValue;
 use Phalcon\Http\Response;
+use App\Library\ExportFile\ExportPdf;
 
 class Chamados extends ModelBase
 {
@@ -706,7 +707,7 @@ class Chamados extends ModelBase
                     echo $msg;
                 }
             } catch (\PDOException $e) {
-                dump($e);
+                Var_dump($e);
             }
         }
     }
@@ -730,9 +731,9 @@ class Chamados extends ModelBase
                         echo $msg;
                     }
                 } catch (\Exception $e) {
-                    dump($e);
+                    var_dump($e);
                 } catch (\PDOException $p) {
-                    dump($p);
+                    var_dump($p);
                 }
             }
         }
@@ -771,10 +772,12 @@ class Chamados extends ModelBase
         $type = $post['type_export'];
         $objects = Chamados::find(['conditions' => $search]);
         $dados = $this->prepareArrayBody($objects, $fields);
-
+        
         if ($type == 'excel') {
             return $this->writeFileExcel($dados, $questions);
         }
+        $export = new ExportPdf();
+            return $export->writeFilePdf($dados, ['header' => $questions, 'template' => 'chamados']);
         return false;
     }
 

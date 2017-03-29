@@ -227,7 +227,6 @@ class GroupsController extends ControllerBase
                 }
                 break;
         }
-//dump($dados);
         sort($return);
         echo json_encode($return);
     }

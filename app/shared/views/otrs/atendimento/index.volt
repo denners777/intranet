@@ -221,6 +221,7 @@
         {{ end_form() }}
     </div>
 </div>
+{% if chamados is defined %}
 <div class="card">
     <div class="card-header">
         Resultado para pesquisa: <span class="text-danger" style="max-width: 80%;display: inline-table;">{{ pesquisa }}</span>
@@ -257,7 +258,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if chamados is defined %}
+
                     {% for chamado in chamados %}
                     <tr>
                         <td>{{ chamado.id~'|'~chamado.chamado }}</td>
@@ -276,7 +277,7 @@
                         <td>{{ chamado.responsavel }}</td>
                     </tr>
                     {% endfor %}
-                    {% endif %}
+
                 </tbody>
             </table>
         </div>
@@ -350,3 +351,4 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+{% endif %}

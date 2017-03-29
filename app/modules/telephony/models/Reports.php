@@ -284,7 +284,6 @@ class Reports extends ModelBase
                     'PERCENTUAL' => number_format($value['PERCENTUAL'], 4, ',', ' '),
                 ];
             }
-            //dump($dados_novos); exit;
 
             return new ObjectPhalcon($dados_novos);
         } else {
