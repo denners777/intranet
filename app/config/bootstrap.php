@@ -710,6 +710,7 @@ class Bootstrap
             'cadastro_filiais' => 'Abertura de Filial',
             'coleta_rescisao' => 'Coleta de Informações para Rescisão Contratual',
             'solicitacoes_externas' => 'Solicitações Externas',
+            'proposta_comercial' => 'Proposta Comercial',
             //actions
             'fornecedores' => 'Fornecedores',
             'produtosServicos' => 'Produtos e Serviços',

@@ -47,6 +47,8 @@
     "flatpickr": "flatpickr-calendar#^1.8.7",
     "semantic": "semantic-ui#^2.2.2",
     "glyphicons-halflings": "*",
-    "jquery-price-format": "flaviosilveira/Jquery-Price-Format"
+    "jquery-price-format": "flaviosilveira/Jquery-Price-Format",
+    "google-chart": "^1.1.2",
+    "jt.timepicker": "jquery-timepicker-jt#^1.11.10"
   }
 }

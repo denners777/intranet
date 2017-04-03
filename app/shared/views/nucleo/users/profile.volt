@@ -165,8 +165,6 @@
                             {% endif %}
                             {% endif %}
                         </dd>
-                    </dl>
-                    <dl class="col-sm-6">
                         {% if auth_identity.ramal is not empty %}
                         <dt>Ramal:</dt>
                         <dd class="m-b-5">
@@ -174,8 +172,45 @@
                         </dd>
                         {% endif %}
                     </dl>
+                    <dl class="col-sm-6">
+                        <dd>
+                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#trocaSenha">
+                                Trocar senha
+                            </button>
+                        </dd>
+                    </dl>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="trocaSenha" tabindex="-1" role="dialog" aria-labelledby="trocaSenha">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Trocar Senha</h4>
+            </div>
+            {{ form("nucleo/session/changePassword", "method":"post", "autocomplete" : "off") }}
+            <div class="modal-body">
+                {{ hidden_field("id", 'value': auth_identity.userId) }}
+                {{ hidden_field("origin", 'value': 'profile') }}
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    {{ password_field('password', 'class': 'form-control fg-input fc-alt', 'required': 'required') }}
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Senha</label>
+                    {{ password_field('confirmPassword', 'class': 'form-control fg-input fc-alt', 'required': 'required') }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+            {{ end_form() }}
         </div>
     </div>
 </div>

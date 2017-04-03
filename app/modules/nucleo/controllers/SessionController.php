@@ -57,31 +57,31 @@ class SessionController extends ControllerBase
     {
 
         try {
-            if ($this->request->isPost()) {
-
-                if ($this->validation()) {
-
-                    $this->auth->check([
-                        'cpf' => $this->request->getPost('cpf', 'alphanum'),
-                        'password' => $this->request->getPost('password'),
-                        'rememberMe' => $this->request->getPost('rememberMe')
-                    ]);
-
-                    $user = $this->auth->getUser();
-
-                    if ($user->mustChangePassword == 'S') {
-                        $msg = 'Este é seu primeiro acesso ao sistema, ou foi solicitado a mudança de sua senha pelo Administrador.<br>Por favor, redefina sua senha.';
-                        $this->flash->notice($msg);
-                        return $this->response->redirect('change-password');
-                    }
-
-                    return $this->response->redirect();
-                }
+            if (!$this->request->isPost()) {
+                return $this->response->redirect('login');
             }
+
+            $this->validation();
+
+            $this->auth->check([
+                'cpf' => $this->request->getPost('cpf', 'alphanum'),
+                'password' => $this->request->getPost('password'),
+                'rememberMe' => $this->request->getPost('rememberMe')
+            ]);
+
+            $user = $this->auth->getUser();
+
+            if ($user->mustChangePassword == 'S') {
+                $msg = 'Foi solicitado a mudança de sua senha pelo Administrador.<br>Por favor, redefina sua senha.';
+                $this->flash->notice($msg);
+                return $this->response->redirect('change-password');
+            }
+
+            return $this->response->redirect();
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
+            return $this->response->redirect('login');
         }
-        return $this->response->redirect('login');
     }
 
     /**
@@ -95,13 +95,11 @@ class SessionController extends ControllerBase
         try {
             if (!$this->request->isPost()) {
                 return $this->response->redirect('login');
-            } else {
-                if ($this->validation()) {
+            }
+            $this->validation();
 
-                    if ($this->makeRegister()) {
-                        $this->flash->success('Cadastro realizado com sucesso.');
-                    }
-                }
+            if ($this->makeRegister()) {
+                $this->flash->success('Cadastro realizado com sucesso.');
             }
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
@@ -117,28 +115,28 @@ class SessionController extends ControllerBase
     {
 
         try {
-            if ($this->request->isPost()) {
+            if (!$this->request->isPost()) {
+                return $this->response->redirect('login');
+            }
 
-                if ($this->validation()) {
-                    $user = Users::findFirstByEmail($this->request->getPost('email', 'email'));
-                    if (!$user) {
-                        throw new Exception('Não há nenhuma conta associada a este e-mail');
-                    } else {
-                        $resetPassword = new ResetPasswords();
-                        $userName = explode('@', $user->email)[0];
-                        $resetPassword->usersName = $userName;
-                        if ($resetPassword->save()) {
-                            $this->flash->success('Sucesso! Por favor verifique suas mensagens de e-mail para redefinir sua senha.');
-                        } else {
-                            foreach ($resetPassword->getMessages() as $message) {
-                                $msg = '';
-                                foreach ($resetPassword->getMessages() as $message) {
-                                    $msg .= $message . '<br>';
-                                }
-                                throw new Exception($msg);
-                            }
-                        }
+            $this->validation();
+
+            $user = Users::findFirstByEmail($this->request->getPost('email', 'email'));
+            if (!$user) {
+                throw new Exception('Não há nenhuma conta associada a este e-mail');
+            }
+            $resetPassword = new ResetPasswords();
+            $userName = explode('@', $user->email)[0];
+            $resetPassword->usersName = $userName;
+            if ($resetPassword->save()) {
+                $this->flash->success('Sucesso! Por favor verifique suas mensagens de e-mail para redefinir sua senha.');
+            } else {
+                foreach ($resetPassword->getMessages() as $message) {
+                    $msg = '';
+                    foreach ($resetPassword->getMessages() as $message) {
+                        $msg .= $message . '<br>';
                     }
+                    throw new Exception($msg);
                 }
             }
         } catch (\Exception $e) {
@@ -222,9 +220,8 @@ class SessionController extends ControllerBase
             }
         }
         if (!empty($msg)) {
-            throw new Exception($msg);
+            throw new \Exception($msg);
         }
-        return true;
     }
 
     /**
@@ -297,11 +294,11 @@ class SessionController extends ControllerBase
             $resetPassword = ResetPasswords::findFirstByCode($code);
 
             if (!$resetPassword) {
-                throw new Exception('Não foi possível encontrar o código.');
+                throw new \Exception('Não foi possível encontrar o código.');
             }
 
             if ($resetPassword->reset != 'N') {
-                throw new Exception('Código expirado.');
+                throw new \Exception('Código expirado.');
             }
 
             $resetPassword->reset = 'Y';
@@ -311,7 +308,7 @@ class SessionController extends ControllerBase
                 foreach ($resetPassword->getMessages() as $message) {
                     $msg .= $message . '<br>';
                 }
-                throw new Exception($msg);
+                throw new \Exception($msg);
             }
 
             $user = Users::findFirst([
@@ -336,45 +333,43 @@ class SessionController extends ControllerBase
     public function changePasswordAction()
     {
 
+        $origin = '';
+
         try {
             $user = $this->auth->getUser();
-
             if (!$user) {
-                throw new Exception('Acesso inválido.');
+                throw new \Exception('Acesso inválido.');
             }
             if ($this->request->isPost()) {
-                if ($this->validation()) {
-                    $user->password = $this->security->hash($this->request->getPost('password'));
-                    $user->mustChangePassword = 'N';
-                    if (!$user->update()) {
-                        $msg = '';
-                        foreach ($user->getMessages() as $message) {
-                            $msg .= $message . '<br>';
-                        }
-                        throw new Exception($msg);
-                    } else {
-                        $passwordChange = new PasswordChanges();
-                        $passwordChange->usersName = $user->userName;
-                        $passwordChange->ipAddress = $this->request->getClientAddress();
-                        $passwordChange->userAgent = $this->request->getUserAgent();
-
-                        if (!$passwordChange->save()) {
-                            $msg = '';
-                            foreach ($passwordChange->getMessages() as $message) {
-                                $msg .= $message . '<br>';
-                            }
-                            throw new Exception($msg);
-                        } else {
-
-                            $this->flash->success('Sua senha foi alterada com sucesso');
-                        }
-                    }
+                $origin = $this->request->getPost('origin');
+                $this->validation();
+                $user->password = $this->security->hash($this->request->getPost('password'));
+                $user->mustChangePassword = 'N';
+                if (!$user->update()) {
+                    $this->getMessageEntity($user);
                 }
+                $passwordChange = new PasswordChanges();
+                $passwordChange->usersName = $user->userName;
+                $passwordChange->ipAddress = $this->request->getClientAddress();
+                $passwordChange->userAgent = $this->request->getUserAgent();
+
+                if (!$passwordChange->save()) {
+                    $this->getMessageEntity($passwordChange);
+                }
+                $this->flash->success('Sua senha foi alterada com sucesso');
+
+                if ($origin == 'profile') {
+                    return $this->response->redirect('profile');
+                }
+
                 return $this->response->redirect();
             }
             $this->view->name = $user->name;
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
+            if ($origin == 'profile') {
+                return $this->response->redirect('profile');
+            }
             return $this->response->redirect('login');
         }
     }
