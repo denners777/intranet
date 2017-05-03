@@ -160,8 +160,8 @@
 
                         <!-- objeto_do_contrato -->
                         <div class="form-group fg-line">
-                            <label><i class="badge bgm-lightgreen">2.5</i> Objeto do Contrato <span class="text-danger">*</span></label>
-                            {{ text_area("Objeto do Contrato", "class" : "form-control fg-input fc-alt", "required": "required", "rows": 7) }}
+                            <label><i class="badge bgm-lightgreen">2.5</i> Objeto da Garantia <span class="text-danger">*</span></label>
+                            {{ text_area("Objeto da Garantia", "class" : "form-control fg-input fc-alt", "required": "required", "rows": 7) }}
                         </div>
                         <!-- /objeto_do_contrato -->
 

@@ -46,7 +46,7 @@ class Auth extends Component
         if (!$this->security->checkHash($credentials['password'], $user->password)) {
             $this->registerUserThrottling($userName);
             $this->security->hash(rand());
-            throw new Exception('Senha não confere ao cadastro!!! Se necessario clique no link \'ESQUECEU A SENHA?\' abaixo do painel de login.');
+            throw new Exception('Senha não confere ao cadastro!!! Se necessario clique no link "ESQUECEU A SENHA?" abaixo do painel de login.');
         }
 
         $this->checkUserFlags($user);

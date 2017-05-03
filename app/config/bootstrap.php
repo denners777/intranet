@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @copyright   2016 Grupo MPE
- * @license     New BSD License; see LICENSE
- * @link        https://github.com/denners777/API-Phalcon
- * @author      Denner Fernandes <denners777@hotmail.com>
- * */
 use App\Library\Auth\Auth as Auth;
 use App\Library\Mail\Mail as Mail;
 use App\Library\FlashMessage\Closable as Closable;
@@ -201,7 +195,8 @@ class Bootstrap
             new \Whoops\Provider\Phalcon\WhoopsServiceProvider($this->_di);
             $debug = new \Phalcon\Debug();
             $debug->listen();
-        } else {
+        }
+        else {
             $rollbar['environment'] = 'production';
             $rollbar['root'] = '/var/www/html/';
             $rollbar['access_token'] = '262a557a310a4cfb8d69a0085c5d861f';
@@ -381,16 +376,19 @@ class Bootstrap
                     );
 
                     return $modelsMetadata;
-                } elseif ($config->model->metadata->adapter == 'Apc') {
+                }
+                elseif ($config->model->metadata->adapter == 'Apc') {
                     $modelsMetadata = new MetadataApc(array(
                         'prefix' => 'mpe-intranet-',
                         'lifetime' => 86400
                     ));
                     return $modelsMetadata;
-                } else {
+                }
+                else {
                     return new MetadataMemory();
                 }
-            } else {
+            }
+            else {
                 return new MetadataMemory();
             }
         });
@@ -710,6 +708,7 @@ class Bootstrap
             'cadastro_filiais' => 'Abertura de Filial',
             'coleta_rescisao' => 'Coleta de Informações para Rescisão Contratual',
             'solicitacoes_externas' => 'Solicitações Externas',
+            'proposta_comercial' => 'Proposta Comercial',
             //actions
             'fornecedores' => 'Fornecedores',
             'produtosServicos' => 'Produtos e Serviços',

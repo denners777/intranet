@@ -24,6 +24,11 @@ class Protheus extends ModelBase
         $this->setReadConnectionService('protheusDb');
     }
 
+    public static function getProtheus()
+    {
+        return new Protheus();
+    }
+
     public static function columnMap()
     {
         return [];

@@ -82,5 +82,7 @@ $(document).ready(function () {
                 return false;
         }
     });
-
+    
+    $('.timePicker').timepicker({ 'timeFormat': 'H:i' });
+    
 });
