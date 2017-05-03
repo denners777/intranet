@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @copyright   2015 - 2015 Grupo MPE
- * @license     New BSD License; see LICENSE
- * @link        http://www.grupompe.com.br
- * @author      Denner Fernandes <denner.fernandes@grupompe.com.br>
- * */
-
 namespace App\Modules\Intranet\Controllers;
 
 use App\Shared\Controllers\ControllerBase;
@@ -21,7 +14,6 @@ use App\Modules\Nucleo\Models\RM\Psecao;
 use App\Modules\Telephony\Models\Statement;
 use App\Modules\Catraca\Models\Movimentos;
 use App\Modules\Intranet\Models\Processos;
-use App\Modules\Otrs\Models\Chamados;
 use App\Plugins\Tools;
 
 class ExportController extends ControllerBase
@@ -37,7 +29,6 @@ class ExportController extends ControllerBase
     {
         try {
 
-            $tools = new Tools();
             $search = $this->request->get('search', 'string');
 
             switch ($this->request->get('obj')) {
@@ -101,63 +92,20 @@ class ExportController extends ControllerBase
                     $dados = $object->getReport($aux[0], $aux[1]);
                     $options['fileName'] = 'Processos';
                     break;
-                case 'atendimento':
-                    $search = str_replace('&#39;', "'", str_replace('&#34;', '"', $search));
-                    $search = json_decode($search, true);
-                    $dadosAux = Chamados::find(['conditions' => $search, 'order' => 'id']);
-                    $dadosAux = $dadosAux->toArray();
-                    $dados = [];
-                    $dataFechamento = '';
-
-                    foreach ($dadosAux as $key => $value) {
-                        $dataAbertura = \DateTime::createFromFormat('d-M-y', $value['dataAbertura']);
-                        if ($value['tipo'] != 'Abertos') {
-                            $dataFechamento = \DateTime::createFromFormat('d-M-y', $value['dataFechamento']);
-                            $dataFechamento = $dataFechamento->format('d/m/Y');
-                        }
-
-                        $dados[] = [
-                            'Tipo' => $value['tipo'],
-                            'Chamado' => $value['chamado'],
-                            'Assunto' => $value['assunto'],
-                            'Fila' => $value['fila'],
-                            'Data Abertura' => $dataAbertura->format('d/m/Y'),
-                            'Data Fechamento' => $dataFechamento,
-                            'Status' => $value['status'],
-                            'TOTVS' => $value['totvs'],
-                            'Cliente' => $value['cliente'],
-                            'Proprietário' => $value['proprietario'],
-                            'Responsável' => $value['responsavel'],
-                            'Empresa' => $value['empresa'],
-                            'Chapa' => $value['chapa'],
-                            'Nome' => $value['nome'],
-                            'Centro de Custo' => $value['cc'] . ' - ' . $value['descCc'],
-                            'Gestor' => $value['codGestor'] . ' - ' . $value['gestor'],
-                            'Departamento' => $value['codDepto'] . ' - ' . $value['depto'],
-                        ];
-                    }
-
-                    $options['fileName'] = 'Relatório de Chamados';
-                    $options['toArray'] = false;
-                    break;
                 default:
                     throw new \Exception('Erro ao exportar: Objeto não definido.');
             }
 
             $options['download'] = true;
+            $tools = new Tools();
 
             switch ($this->request->get('type')) {
                 case 'excel':
                     return $tools->writeXLS($dados, $options);
-                    break;
-
                 case 'pdf':
                     return $tools->writePdf($dados, $options);
-                    break;
-
                 default:
                     throw new Exception('Erro ao exportar: Tipo não definido.');
-                    break;
             }
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());

@@ -22,38 +22,41 @@
                                 'emptyText' => 'Escolha uma opção',
                                 'emptyValue' => '',
                                 'class' => 'form-control fg-input fc-alt',
-                                'name' => 'Empresa',
                                 'required' => 'required']
                             );
                             ?>
                         </div>
                         <!-- /empresa -->
-                        <!-- data | hora -->
+
                         <div class="row">
                             <div class="col-md-7">
+                                <!-- data -->
                                 <div class="form-group fg-line">
                                     <label for="data"><i class="badge bgm-lightgreen">1.2</i> Data de Elaboração <span class="text-danger">*</span></label>
-                                    {{ text_field("data", "name": "Data de Elaboração", "class" : "form-control fg-input fc-alt datepicker", 'required': 'required', 'value': date('d/m/Y')) }}
+                                    {{ text_field("data", "class" : "form-control fg-input fc-alt datepicker", 'required': 'required', 'value': date('d/m/Y')) }}
                                 </div>
+                                <!-- /data -->
                             </div>
                             <div class="col-md-5">
+                                <!-- hora -->
                                 <div class="form-group fg-line">
                                     <label for="hora"><i class="badge bgm-lightgreen">1.3</i> Hora <span class="text-danger">*</span></label>
-                                    {{ text_field("hora", "name": "Hora", "class" : "form-control fg-input fc-alt timePicker", 'required': 'required', 'value': date('h:i')) }}
+                                    {{ text_field("hora", "class" : "form-control fg-input fc-alt timePicker", 'required': 'required', 'value': date('h:i')) }}
                                 </div>
+                                <!-- /hora -->
                             </div>
                         </div>
-                        <!-- /data | hora -->
+
                         <!-- cliente -->
                         <div class="form-group fg-line">
                             <label for="cliente"><i class="badge bgm-lightgreen">1.4</i> Cliente <span class="text-danger">*</span></label>
-                            {{ text_field("cliente", "name": "Cliente", "class" : "form-control fg-input fc-alt", 'required': 'required') }}
+                            {{ text_field("cliente", "class" : "form-control fg-input fc-alt", 'required': 'required') }}
                         </div>
                         <!-- /cliente -->
                         <!-- unidadeLocal -->
                         <div class="form-group fg-line">
                             <label for="unidadeLocal"><i class="badge bgm-lightgreen">1.5</i> Unidade/Local <span class="text-danger">*</span></label>
-                            {{ text_field("unidadeLocal", "name": "Unidade/Local", "class" : "form-control fg-input fc-alt", 'required': 'required') }}
+                            {{ text_field("unidadeLocal", "class" : "form-control fg-input fc-alt", 'required': 'required') }}
                         </div>
                         <!-- /unidadeLocal -->
                         <div class="row">
@@ -65,11 +68,9 @@
                                     echo $this->tag->selectStatic(['tipoEdital',
                                         $tipoEdital,
                                         'useEmpty' => true,
-                                        'name' => 'Tipo Edital',
                                         'emptyText' => 'Escolha uma opção',
                                         'emptyValue' => '',
                                         'class' => 'form-control fg-input fc-alt',
-                                        'name' => 'Tipo Edital',
                                         'required' => 'required']
                                     );
                                     ?>
@@ -77,18 +78,18 @@
                                 <!-- /tipoEdital -->
                             </div>
                             <div class="col-md-7">
-                                <!-- descEsital -->
+                                <!-- descEdital -->
                                 <div class="form-group fg-line">
-                                    <label for="descEsital"><i class="badge bgm-lightgreen">1.7</i> Descrição Edital <span class="text-danger">*</span></label>
-                                    {{ text_field("descEsital", "name": "Descrição Edital", "class" : "form-control fg-input fc-alt", 'required': 'required') }}
+                                    <label for="descEdital"><i class="badge bgm-lightgreen">1.7</i> Descrição Edital <span class="text-danger">*</span></label>
+                                    {{ text_field("descEdital", "class" : "form-control fg-input fc-alt", 'required': 'required') }}
                                 </div>
-                                <!-- /descEsital -->
+                                <!-- /descEdital -->
                             </div>
                         </div>
                         <!-- objeto -->
                         <div class="form-group fg-line">
                             <label for="objeto"><i class="badge bgm-lightgreen">1.8</i> Objeto <span class="text-danger">*</span></label>
-                            {{ text_area("objeto", "name": "Objeto", "class" : "form-control fg-input fc-alt", 'rows': 4, 'required': 'required') }}
+                            {{ text_area("objeto", "class" : "form-control fg-input fc-alt", 'rows': 4, 'required': 'required') }}
                         </div>
                         <!-- /objeto -->
                     </div>
@@ -101,11 +102,9 @@
                             echo $this->tag->selectStatic(['unidadeOrganizacional',
                                 $unidadeOrganizacional,
                                 'useEmpty' => true,
-                                'name' => 'Tipo Edital',
                                 'emptyText' => 'Escolha uma opção',
                                 'emptyValue' => '',
                                 'class' => 'form-control fg-input fc-alt',
-                                'name' => 'Unidade Organizacional',
                                 'required' => 'required']
                             );
                             ?>
@@ -119,11 +118,9 @@
                             echo $this->tag->selectStatic(['razoesEstrategicas',
                                 $razoesEstrategicas,
                                 'useEmpty' => true,
-                                'name' => 'Tipo Edital',
                                 'emptyText' => 'Escolha uma opção',
                                 'emptyValue' => '',
                                 'class' => 'form-control fg-input fc-alt',
-                                'name' => 'Razões Estratégicas',
                                 'required' => 'required']
                             );
                             ?>
@@ -135,13 +132,13 @@
                             <label for="analisePreliminarExequivel"><i class="badge bgm-lightgreen">1.11</i> Análise Preliminar Exequível <span class="text-danger">*</span></label>
                             <br />
                             <label class="checkbox checkbox-inline">
-                                {{ check_field("analisePreliminarExequivel1", "name": "Análise Preliminar Exequível[]", "value" : "Técnica / Operacional") }}
+                                {{ check_field("analisePreliminarExequivel1", "name": "analisePreliminarExequivel[]", "value" : "Técnica / Operacional", 'required': 'required') }}
                                 <i class="input-helper"></i>
                                 Técnica / Operacional
                             </label>
                             <br />
                             <label class="checkbox checkbox-inline">
-                                {{ check_field("analisePreliminarExequivel2", "name": "Análise Preliminar Exequível[]", "value" : "Comercial / Financeira") }}
+                                {{ check_field("analisePreliminarExequivel2", "name": "analisePreliminarExequivel[]", "value" : "Comercial / Financeira") }}
                                 <i class="input-helper"></i>
                                 Comercial / Financeira
                             </label>
@@ -154,12 +151,12 @@
                             <label for="analiseRisco"><i class="badge bgm-lightgreen">1.12</i> Análise de Risco <span class="text-danger">*</span></label>
                             <br />
                             <label class="radio radio-inline">
-                                {{ radio_field("analiseRisco1", "name": "Análise de Risco", "value" : "Sim") }}
+                                {{ radio_field("analiseRisco1", "name": "analiseRisco", "value" : "Sim", 'required': 'required') }}
                                 <i class="input-helper"></i>
                                 Sim
                             </label>
                             <label class="radio radio-inline">
-                                {{ radio_field("analiseRisco2", "name": "Análise de Risco", "value" : "Não") }}
+                                {{ radio_field("analiseRisco2", "name": "analiseRisco", "value" : "Não") }}
                                 <i class="input-helper"></i>
                                 Não
                             </label>
@@ -174,11 +171,9 @@
                             echo $this->tag->selectStatic(['responsavel',
                                 $responsavel,
                                 'useEmpty' => true,
-                                'name' => 'Tipo Edital',
                                 'emptyText' => 'Escolha uma opção',
                                 'emptyValue' => '',
                                 'class' => 'form-control fg-input fc-alt',
-                                'name' => 'Responsável',
                                 'required' => 'required']
                             );
                             ?>

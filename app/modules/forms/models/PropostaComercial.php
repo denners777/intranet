@@ -22,74 +22,69 @@ class PropostaComercial extends ModelBase
     use beforeUpdate;
 
     /**
-     *
-     * @var integer 
+     * @Primary
+     * @Identity
+     * @Column(type="integer", nullable=false)
      */
     protected $id;
 
     /**
-     *
-     * @var string 
+     * @Column(type="string", length=14, nullable=false)
      */
     protected $record;
 
     /**
-     *
-     * @var string 
+     * @Column(type="string", length=4000)
      */
     protected $content;
 
     /**
-     *
-     * @var string 
+     * @Column(type="string", length=1, nullable=false)
      */
     protected $status;
 
     /**
-     *
-     * @var string
+     * @Column(type="string", length=50)
      */
     protected $contract;
 
     /**
-     *
-     * @var string
+     * @Column(type="string", length=1000)
      */
     protected $comments;
 
     /**
-     *
-     * @var double
+     * @Column(type="decimal", length=15,2)
      */
     protected $budgetAmount;
 
     /**
-     *
-     * @var string
+     * @Column(type="string", length=11)
+     */
+    protected $cpf;
+
+    /**
+     * @Column(type="string", length=1)
      */
     protected $sdel;
 
     /**
-     *
-     * @var string
+     * @Column(type="string", length=45)
      */
     protected $createBy;
 
     /**
-     *
-     * @var datetime
+     * @Column(type="string")
      */
     protected $createIn;
 
     /**
-     *
-     * @var string
+     * @Column(type="string", length=45)
      */
     protected $updateBy;
 
     /**
-     *
-     * @var datetime
+     * @Column(type="string")
      */
     protected $updateIn;
 
@@ -163,6 +158,15 @@ class PropostaComercial extends ModelBase
     public function getSdel()
     {
         return $this->sdel;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    public function getCpf()
+    {
+        return $this->cpf;
     }
 
     /**
@@ -280,6 +284,17 @@ class PropostaComercial extends ModelBase
 
     /**
      * 
+     * @param type $cpf
+     * @return $this
+     */
+    public function setCpf($cpf)
+    {
+        $this->cpf = $cpf;
+        return $this;
+    }
+
+    /**
+     * 
      * @param type $sdel
      * @return $this
      */
@@ -373,6 +388,7 @@ class PropostaComercial extends ModelBase
             'CD_CONTRATO' => 'contract',
             'DS_COMENTARIOS' => 'comments',
             'VR_ORCAMENTO' => 'budgetAmount',
+            'CD_CPF' => 'cpf',
             'SDEL' => 'sdel',
             'CREATEBY' => 'createBy',
             'CREATEIN' => 'createIn',
@@ -480,6 +496,37 @@ class PropostaComercial extends ModelBase
             'Política' => 'Política',
         ];
         ;
+    }
+
+    public static function getTypeStatus()
+    {
+        return [
+            'A' => 'Agradecemos',
+            'B' => 'Elaboração',
+            'E' => 'Entregue',
+            'G' => 'Ganhamos',
+            'J' => 'Julgamento',
+            'N' => 'Não Participamos',
+            'P' => 'Perdemos',
+        ];
+    }
+
+    public static function getSequencial()
+    {
+        $PropostaComercial = PropostaComercial::find(['order' => 'id']);
+
+        foreach ($PropostaComercial as $value) {
+            $maxId = $value;
+        }
+
+        $year = substr($maxId->record, 10, 4);
+
+        if ($maxId === false || $year != date('Y')) {
+            return '001';
+        }
+        $sequency = substr($maxId->record, 6, 3) + 1;
+
+        return str_pad($sequency, 3, '0', STR_PAD_LEFT);
     }
 
 }
