@@ -110,9 +110,10 @@ class Movimentos extends ModelBase {
                     LEFT JOIN VW_COLABORADOR_PROTHEUS CO
                         ON CO.NOME = MO.DS_NOME
                   )
-                  WHERE 1 = 1 {$busca}
+                  WHERE 1 = 1 
+                  {$busca}
                   ORDER BY NOME, DATA, HORA";
-                  
+
         return new ObjectPhalcon($connection->fetchAll($query, \Phalcon\Db::FETCH_ASSOC));
     }
 

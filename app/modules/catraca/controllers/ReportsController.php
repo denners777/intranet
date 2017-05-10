@@ -38,9 +38,6 @@ class ReportsController extends ControllerBase
                 $dateFrom = $this->extractDate('dateFrom');
                 $dateTo = $this->extractDate('dateTo');
                 $type = $this->request->getPost('type', 'string');
-
-                //$this->prepareMovimento($dateFrom, $dateTo);
-
                 $this->view->movimentos = $this->getMovimentos($dateFrom, $dateTo, $search, $type);
                 $this->view->pesquisa = $search . '|' . $dateFrom . '|' . $dateTo . '|' . $type;
                 $this->view->export = true;
