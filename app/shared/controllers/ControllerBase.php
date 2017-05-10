@@ -342,7 +342,7 @@ class ControllerBase extends Controller
         foreach ($entity->getMessages() as $message) {
             $msg .= $message . '<br />';
         }
-        throw new Exception($msg);
+        throw new \Exception($msg);
     }
 
 }

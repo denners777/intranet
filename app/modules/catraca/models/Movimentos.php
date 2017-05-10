@@ -85,46 +85,41 @@ class Movimentos extends ModelBase {
             $busca .= " AND DT_MOVIMENTO >= TO_DATE('{$dateFrom}', 'YYYY-MM-DD')";
         }
         if (!empty($dateTo)) {
-            $busca .= " AND DT_MOVIMENTO <= TO_DATE('{$dateTo}', 'YYYY-MM-DD')";
+            $dateTo = $dateTo . ' 23:59:59';
+            $busca .= " AND DT_MOVIMENTO <= TO_DATE('{$dateTo}', 'YYYY-MM-DD HH24:MI:SS')";
         }
         if (!empty($pesquisa)) {
             $busca .= " AND (UPPER(EMPRESA) LIKE UPPER('%$pesquisa%')
                           OR UPPER(NOME) LIKE UPPER('%$pesquisa%')
                           OR UPPER(CPF) LIKE UPPER('%$pesquisa%')
-                          OR UPPER(CCEO) LIKE UPPER('%$pesquisa%')
                           OR UPPER(SECAO) LIKE UPPER('%$pesquisa%'))";
         }
 
         $connection = $this->customSimpleQuery('db');
 
-        $szhColaboradores = new Colaboradores();
-        $empresas = $szhColaboradores->getNameEmpresas();
-        $empresas = str_replace('szhEmpresa', 'ZH.ZH_EMPRESA', $empresas);
-
-        $query = "SELECT EMPRESA, NOME, CPF, CCEO, SECAO, DATA, HORA, TIPO FROM(
-                    SELECT {$empresas} EMPRESA,
-                         TRIM(MO.DS_NOME) NOME,
-                         TRIM(ZH.ZH_CPF) CPF,
-                         TRIM(ZH.ZH_CCEO) CCEO,
-                         TRIM(ZH.ZH_SECAO) SECAO,
-                         TO_CHAR(MO.DT_MOVIMENTO, 'DD/MM/YYYY') DATA,
-                         TO_CHAR(MO.DT_MOVIMENTO, 'HH24:MI:SS') HORA,
-                         TRIM(MO.DS_TIPO) TIPO,
-                         DT_MOVIMENTO
+        $query = "SELECT EMPRESA, NOME, CPF, SECAO, DATA, HORA, TIPO FROM(
+                    SELECT CO.EMPRESA,
+                        CO.NOME,
+                        CO.CPF,
+                        CO.CODSECAO SECAO,
+                        TO_CHAR(MO.DT_MOVIMENTO, 'DD/MM/YYYY') DATA,
+                        TO_CHAR(MO.DT_MOVIMENTO, 'HH24:MI:SS') HORA,
+                        TRIM(MO.DS_TIPO) TIPO,
+                        MO.DT_MOVIMENTO
                     FROM MOVIMENTO_CATRACA MO
-                    LEFT JOIN PRODUCAO_9ZGXI5.SZH010@PROTHEUSPROD ZH
-                    ON TRIM(ZH.ZH_NOME) = TRIM(MO.DS_NOME)
-                    ORDER BY 2, DT_MOVIMENTO, 8
+                    LEFT JOIN VW_COLABORADOR_PROTHEUS CO
+                        ON CO.NOME = MO.DS_NOME
                   )
-                  WHERE 1 = 1 {$busca}";
-
+                  WHERE 1 = 1 {$busca}
+                  ORDER BY NOME, DATA, HORA";
+                  
         return new ObjectPhalcon($connection->fetchAll($query, \Phalcon\Db::FETCH_ASSOC));
     }
 
     public function deleteByRange($dateFrom, $dateTo) {
 
         $connection = $this->customConnection('db');
-        $result = $connection->delete('MOVIMENTO_CATRACA', "DT_MOVIMENTO BETWEEN TO_DATE('{$dateFrom}', 'YYYY-MM-DD') AND TO_DATE('{$dateTo}', 'YYYY-MM-DD')");
+        $result = $connection->delete('MOVIMENTO_CATRACA', "DT_MOVIMENTO BETWEEN TO_DATE('{$dateFrom}', 'YYYY-MM-DD') AND TO_DATE('{$dateTo}', 'YYYY-MM-DD HH24:MI:SS')");
         $connection->bye();
         return $result;
     }

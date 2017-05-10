@@ -20,7 +20,7 @@ class Firebird {
     }
 
     private function connect() {
-        $hostname = 'localhost:/var/www/html/files/firebird/Henry.fdb';
+        $hostname = getenv('FILE_FIREBIRD');
         $username = 'sysdba';
         $password = 'masterkey';
 
@@ -32,15 +32,12 @@ class Firebird {
     public function getMovimento($dateFrom = '', $dateTo = '') {
 
         $search = '';
-
         if (!empty($dateFrom)) {
-            $search .= "AND CAST(HE22_DT_REGISTRO AS DATE) >= CAST('{$dateFrom}' AS DATE)";
+            $search .= " AND CAST(HE22_DT_REGISTRO AS DATE) >= CAST('{$dateFrom}' AS DATE)";
         }
-
         if (!empty($dateTo)) {
-            $search .= "AND CAST(HE22_DT_REGISTRO AS DATE) <= CAST('{$dateTo}' AS DATE)";
+            $search .= " AND CAST(HE22_DT_REGISTRO AS DATE) <= CAST('{$dateTo}' AS DATE)";
         }
-
         $sql = "SELECT
                     HE22_ST_MATRICULA AS MATRICULA,
                     HE02_ST_NOME      AS NOME,
@@ -58,15 +55,13 @@ class Firebird {
                 ORDER BY 2, 3, 4";
 
         $query = ibase_query($this->connection, $sql);
-
         $return = [];
         $i = 0;
-
         while ($row = ibase_fetch_object($query)) {
-            $return[$i]['id'] = $row->MATRICULA;
-            $return[$i]['name'] = $row->NOME;
+            $return[$i]['id'] = (int) trim($row->MATRICULA) . str_replace('-', '', str_replace(' ', '', str_replace(':', '', $row->REGISTRO)));
+            $return[$i]['name'] = trim($row->NOME);
             $return[$i]['dataMovimento'] = $row->REGISTRO;
-            $return[$i]['tipo'] = $row->MOVIMENTO;
+            $return[$i]['tipo'] = trim($row->MOVIMENTO);
             $i++;
         }
         return new ObjectPhalcon($return);

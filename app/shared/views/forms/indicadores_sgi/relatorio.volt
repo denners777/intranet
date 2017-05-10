@@ -633,7 +633,7 @@
 
                     <div class="table-responsive">
                         <table class="table table-striped table-vmiddle bootgrid-table">
-                            <caption><span class="badge bgm-green">5.0</span> Outras Doenças Reportáveis</caption>
+                            <caption><span class="badge bgm-green">5.0</span> Equipe do SESMT</caption>
                             <thead>
                                 <tr>
                                     <th>Ítem</th>

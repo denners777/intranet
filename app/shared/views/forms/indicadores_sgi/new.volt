@@ -265,7 +265,7 @@
                     </fieldset>
                     <br />
                     <fieldset class="well well-alt">
-                        <legend><span class="badge bgm-green">5.0</span> Outras Doenças Reportáveis</legend>
+                        <legend><span class="badge bgm-green">5.0</span> Equipe do SESMT</legend>
                         <div class="row">
                             <div class="col-lg-5">
 

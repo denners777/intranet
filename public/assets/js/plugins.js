@@ -21,3 +21,4 @@
 // @koala-prepend "../vendors/bower_components/bootstrap-fileinput/js/locales/pt-BR.js"
 // @koala-prepend "../vendors/bower_components/bootstrap-fileinput/themes/fa/theme.js"
 // @koala-prepend "../vendors/bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"
+// @koala-prepend "../vendors/bower_components/jt.timepicker/jquery.timepicker.min.js"

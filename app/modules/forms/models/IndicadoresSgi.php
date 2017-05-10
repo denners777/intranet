@@ -1264,7 +1264,7 @@ class IndicadoresSgi extends ModelBase
                             ],
                         ],
                     ],
-                    'Outras Doenças Reportáveis2' => [
+                    'Equipe do SESMT' => [
                         'numero' => 5,
                         'fields' => [
                             'quantProfPertSesmt' => [
